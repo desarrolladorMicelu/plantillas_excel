@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de Celulares</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-oG0qvV+ZDEHkk7uLO2l78tbwF4P7kq4shpUe+cU9Rh5KwE3DgCe0qBYY63POxRfmClgDSSspPO5XlW4qIn9pA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/productos.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Roboto:400,700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+ 
+<body>
+    <div class="ingresoprincipal">
+        <div class="ingreso">
+            <div class="form-container">
+                <h1 class="titulo1">Seleccionar los Dispositivos de Descarga</h1>
+                <form action="/tu_accion" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <select class="form-select2" id="plataforma" name="plataforma" required>
+                                <option class="selector" value="">Selecciona una plataforma</option>
+                                <option value="micelu">Micelu</option>
+                                <option value="bancolombia">Bancolombia</option>
+                                <option value="falabella">Falabella</option>
+                                <option value="exito">Éxito</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="micelu-content" style="display: none;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="celulares" for="celulares">Celulares</label>
+                                <select class="form-select" id="celulares" name="celulares" required>
+                                    <option class="selector" value="">Selecciona un celular</option>
+                                    {% for celular in celulares %}
+                                    <option value="{{ celular.sku }}">{{ celular.nombre }} ({{ celular.sku }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="varisele"> Variaciones</label>
+                                <div class="checkbox-list">
+                                    <div id="variaciones-checkboxes"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="varisele"> Seleccionados</label>
+                                <div class="selected-list">
+                                    <ul id="lista-seleccionados"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="falabella-content" style="display: none;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="celulares" for="falabella-celulares">Celulares Falabella</label>
+                                <select class="form-select" id="falabella-celulares" name="falabella-celulares" required>
+                                    <option class="selector" value="">Selecciona un celular</option>
+                                    {% for celular in celulares_falabella %}
+                                    <option value="{{ celular.sku_del_vendedor }}">{{ celular.nombre }} ({{ celular.sku_del_vendedor }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="varisele"> Seleccionados</label>
+                                <div class="selected-list">
+                                    <ul id="lista-seleccionados-falabella"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="bancolombia-content" style="display: none;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="celulares" for="bancolombia-celulares">Celulares Bancolombia</label>
+                                <select class="form-select" id="bancolombia-celulares" name="bancolombia-celulares" required>
+                                    <option class="selector" value="">Selecciona un celular</option>
+                                    {% for celular in celulares_bancolombia %}
+                                    <option value="{{ celular.product_id }}">{{ celular.nombre }} ({{ celular.product_id }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="varisele">Seleccionados</label>
+                                <div class="selected-list">
+                                    <ul id="lista-seleccionados-bancolombia"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="exito-content" style="display: none;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="celulares" for="exito-celulares">Celulares Éxito</label>
+                                <select class="form-select" id="exito-celulares" name="exito-celulares" required>
+                                    <option class="selector" value="">Selecciona un celular</option>
+                                    {% for celular in celulares_exito %}
+                                    <option value="{{ celular.ean }}">{{ celular.nombre_del_producto }} ({{ celular.ean }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="varisele">Seleccionados</label>
+                                <div class="selected-list">
+                                    <ul id="lista-seleccionados-exito"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+ 
+    <div class="form-container">
+        <h1 class="titulo1">Descargar Archivos</h1>
+        <div class="contenedor-flex">
+            <div class="cuadro">
+                <div class="titulo-contenedor">
+                    <div class="texto-boton-contenedor">
+                        <h2 class="titulo">Crear Producto</h2>
+                        <select id="plataforma-crear" class="form-select">
+                            <option value="">Elegir plataforma</option>
+                            <option value="micelu">Micelu</option>
+                            <option value="bancolombia">Bancolombia</option>
+                            <option value="falabella">Falabella</option>
+                            <option value="exito">Éxito</option>
+                        </select>
+                        <button id="crear-producto" class="btn-crear">
+                            <i class="bi bi-arrow-down-circle"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="cuadro">
+                <div class="titulo-contenedor">
+                    <div class="imagen-boton-contenedor">
+                        <img src="{{ url_for('static', filename='images/micelu2.png') }}" alt="cable" class="imagen">
+                        <button id="descargar-micelu" class="btn-crear">
+                            <i class="bi bi-arrow-down-square-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="cuadro">
+                <div class="titulo-contenedor">
+                    <div class="imagen-boton-contenedor">
+                        <img src="{{ url_for('static', filename='images/bancolombia.png') }}" alt="cable"
+                            class="imagen">
+                        <button id="descargar-bancolombia" class="btn-crear">
+                            <i class="bi bi-arrow-down-square-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="cuadro">
+                <div class="titulo-contenedor">
+                    <div class="imagen-boton-contenedor">
+                        <img src="{{ url_for('static', filename='images/falabella.png') }}" alt="cable" class="imagen">
+                        <button id="descargar-falabella" class="btn-crear">
+                            <i class="bi bi-arrow-down-square-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="cuadro">
+                <div class="titulo-contenedor">
+                    <div class="imagen-boton-contenedor">
+                        <img src="{{ url_for('static', filename='images/exito.png') }}" alt="cable" class="imagen">
+                        <button id="descargar-exito" class="btn-crear">
+                            <i class="bi bi-arrow-down-square-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <div id="modal-crear-producto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="titulo-modal">Formulario de Productos</h2>
+            <form id="form-crear-producto">
+                <!-- Los campos se generarán dinámicamente con JavaScript -->
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/celulares.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/falabella.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/exito.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bancolombia.js') }}"></script>
+
+</body>
+ 
+</html>
